@@ -19,6 +19,9 @@ public class GameController : MonoBehaviour {
 	public bool freeDouble = false;
 	public bool octet = false;
 	public bool doubles = false;
+	public string endGame;
+	public bool end = false;
+
 	// Use this for initialization
 	void Start () {
 		// Drawing the board and putting pieces into a list
@@ -57,6 +60,11 @@ public class GameController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
+	}
+
+	public void End()
+	{
+		// Clear screen
 	}
 
 	// Vars based on kmap setting where A is right map, B is bottom two rows, C is middle two rows,

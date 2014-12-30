@@ -25,7 +25,6 @@ public class position : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		cont = (GameController)(GameObject.Find("Camera").GetComponent("GameController"));
-
 	}
 	
 	// Update is called once per frame
@@ -148,7 +147,11 @@ public class position : MonoBehaviour {
 					}
 					else {
 						cont.octetPos.Add(this.gameObject);
-						if (octetValid(cont.octetPos)); //load end game for octet
+						if (octetValid(cont.octetPos)){
+							cont.endGame = "Player 1 Wins!";
+							cont.End();
+							cont.end = true;
+						} //load end game for octet
 						else {
 							for (int i = 0; i < 8 ; i++){
 								cont.octetPos[i].GetComponent<TextMesh>().color = Color.white;
@@ -167,7 +170,11 @@ public class position : MonoBehaviour {
 					}
 					else {
 						cont.octetPos.Add(this.gameObject);
-						if (octetValid(cont.octetPos)); //load end game for octet
+						if (octetValid(cont.octetPos)){
+							cont.endGame = "Player 2 Wins!";
+							cont.End();
+							cont.end = true;
+						} //load end game for octet
 						else{
 							for (int i = 0; i < 8 ; i++){
 								cont.octetPos[i].GetComponent<TextMesh>().color = Color.white;
@@ -257,6 +264,7 @@ public class position : MonoBehaviour {
 	}
 
 	// Finds if the four selected pieces have at least three variables in common (to make a valid quad)
+	// Same for octet and double except eight/two and two/four respectively.
 	bool Valid(List<GameObject> selected) {
 		int sharedVar = 0;
 		if ((((position)selected[0].GetComponent("position")).A == ((position)selected[1].GetComponent("position")).A) && (((position)selected[1].GetComponent("position")).A == ((position)selected[2].GetComponent("position")).A) && (((position)selected[2].GetComponent("position")).A == ((position)selected[3].GetComponent("position")).A)) sharedVar++;
@@ -293,46 +301,81 @@ public class position : MonoBehaviour {
 
 	// For drawing buttons when switching players during quad counting
 	void OnGUI() {
-		if (cont.unusedPieces.Count != 0){
+		if (cont.unusedPieces.Count != 0 && cont.end == false){
 			// Octet shows up when both players have made at least eight moves.
 			if (cont.P2pos.Count > 7){
-				if (GUI.Button(new Rect(375, 280, 150, 30), "Octet")) cont.octet = true;
+				if (GUI.Button(new Rect(Screen.width/2 - 65, 280, 150, 30), "Octet")) cont.octet = true;
+			}
+			if (cont.octet == true){
+				GUI.Label(new Rect(Screen.width/2 - 60, 50, 300, 30), "Do you have an octet?");
 			}
 		}
 
-		if (cont.unusedPieces.Count == 0){
+		if (cont.unusedPieces.Count == 0 && cont.end == false){
 			if (cont.doubles == false){
-				GUI.Label(new Rect(200, 85, 200, 20), "Player 1 Quads:" + cont.P1quads);
-				GUI.Label(new Rect(580, 85, 200, 20), "Player 2 Quads:" + cont.P2quads);
+				GUI.Label(new Rect(Screen.width/2 - 200, 55, 300, 30), "Player 1 Quads:" + cont.P1quads);
+				GUI.Label(new Rect(Screen.width/2 + 125, 55, 300, 30), "Player 2 Quads:" + cont.P2quads);
+				GUI.Label(new Rect(Screen.width/2 - 50, 40, 300, 30), "Time to count quads!");
 		
 				if (cont.currentUser == "P1"){
-					if (GUI.Button(new Rect(375, 280, 150, 30), "Player 1 Done")) cont.currentUser = "P2";
+					if (GUI.Button(new Rect(Screen.width/2 - 65, 270, 150, 30), "Player 1 Done")) cont.currentUser = "P2";
 				}
 				else if (cont.currentUser == "P2"){
-					if (GUI.Button(new Rect(375, 280, 150, 30), "Player 2 Done")){
+					if (GUI.Button(new Rect(Screen.width/2 - 65, 270, 150, 30), "Player 2 Done")){
 						if (cont.P1quads == cont.P2quads) {
 							cont.doubles = true;
 							cont.currentUser = "P1";
 						}
-						else; //load end scene
+						else {
+							if (cont.P1quads > cont.P2quads) cont.endGame = "Player 1 Wins!";
+							else cont.endGame = "Player 2 wins!";
+							cont.End();
+							cont.end = true;
+						} //load end scene
 					} 
 				}
 			}
 
 			else if (cont.doubles == true){
-				GUI.Label(new Rect(200, 85, 200, 20), "Player 1 Doubles:" + cont.P1doubles);
-				GUI.Label(new Rect(580, 85, 200, 20), "Player 2 Doubles:" + cont.P2doubles);
+				GUI.Label(new Rect(Screen.width/2 - 200, 55, 300, 30), "Player 1 Doubles:" + cont.P1doubles);
+				GUI.Label(new Rect(Screen.width/2 + 115, 55, 300, 30), "Player 2 Doubles:" + cont.P2doubles);
+				GUI.Label(new Rect(Screen.width/2 - 50, 40, 300, 30), "Time to count doubles!");
 
 				if (cont.currentUser == "P1"){
-					if (GUI.Button(new Rect(375, 280, 150, 30), "Player 1 Done")) cont.currentUser = "P2";
+					if (GUI.Button(new Rect(Screen.width/2 - 65, 270, 150, 30), "Player 1 Done")) cont.currentUser = "P2";
 				}
 				else if (cont.currentUser == "P2"){
-					if (GUI.Button(new Rect(375, 280, 150, 30), "Player 2 Done")){
-						if (cont.P1doubles == cont.P2doubles); // load tie end game
-						else; //load end scene
+					if (GUI.Button(new Rect(Screen.width/2 - 65, 270, 150, 30), "Player 2 Done")){
+						if (cont.P1doubles == cont.P2doubles){
+							cont.endGame = "It's a tie!";
+							cont.End();
+							cont.end = true;
+						} // load tie end game
+						else{
+							if (cont.P1doubles > cont.P2doubles) cont.endGame = "Player 1 Wins!";
+							else cont.endGame = "Player 2 wins!";
+							cont.End();
+							cont.end = true;
+						} //load end scene
 					} 
 				}
 			}
 		}
+
+		if (cont.end == false){
+			GUI.Label(new Rect(Screen.width/2 - 15, 20, 300, 30), cont.currentUser + "'s turn!");
+		}
+
+		if (cont.end == true){
+			for (int i = 0; i < 16; i++){
+				Destroy(cont.P1pos[i].gameObject.GetComponent("TextMesh"));
+			}
+			for (int i = 0; i < 16; i++){
+				Destroy(cont.P2pos[i].gameObject.GetComponent("TextMesh"));
+			}
+			GUI.Label(new Rect(Screen.width/2 - 25, Screen.height/2 - 50, 300, 30), cont.endGame);
+		}
+
+		if (GUI.Button(new Rect(Screen.width/2 - 230, 260, 125, 30), "Back to main")) Application.LoadLevel("start"); // load main
 	}
 }
