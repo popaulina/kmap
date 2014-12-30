@@ -8,12 +8,17 @@ public class GameController : MonoBehaviour {
 	public string currentUser = "P1";
 	public List<GameObject> P1pos;
 	public List<GameObject> P2pos;
+	public List<GameObject> doublePos;
 	public List<GameObject> quadPos;
 	public List<GameObject> octetPos;
 	public int P1quads = 0;
 	public int P2quads = 0;
+	public int P1doubles = 0;
+	public int P2doubles = 0;
 	public bool freeQuad = false;
+	public bool freeDouble = false;
 	public bool octet = false;
+	public bool doubles = false;
 	// Use this for initialization
 	void Start () {
 		// Drawing the board and putting pieces into a list
