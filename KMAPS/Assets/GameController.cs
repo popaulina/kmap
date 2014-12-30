@@ -8,13 +8,20 @@ public class GameController : MonoBehaviour {
 	public string currentUser = "P1";
 	public List<GameObject> P1pos;
 	public List<GameObject> P2pos;
-
+	public List<GameObject> quadPos;
+	public List<GameObject> octetPos;
+	public int P1quads = 0;
+	public int P2quads = 0;
+	public bool freeQuad = false;
+	public bool octet = false;
 	// Use this for initialization
 	void Start () {
 		// Drawing the board and putting pieces into a list
 		for (int y = 0; y < 4; y++){
 			for (int x = 0; x < 4; x++){
 				GameObject piece = GameObject.CreatePrimitive(PrimitiveType.Quad);
+				piece.AddComponent("BoxCollider");
+				Destroy(piece.GetComponent("MeshCollider"));
 				piece.collider.isTrigger = true;
 				piece.renderer.material.color = Color.grey;
 				piece.name = x.ToString() + y.ToString();
@@ -28,6 +35,8 @@ public class GameController : MonoBehaviour {
 		for (int y = 0; y < 4; y++){
 			for (int x = 4; x < 8; x++){
 				GameObject piece = GameObject.CreatePrimitive(PrimitiveType.Quad);
+				piece.AddComponent("BoxCollider");
+				Destroy(piece.GetComponent("MeshCollider"));
 				piece.collider.isTrigger = true;
 				piece.renderer.material.color = Color.grey;
 				piece.name = x.ToString() + y.ToString();
@@ -42,9 +51,12 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		
 	}
 
+	// Vars based on kmap setting where A is right map, B is bottom two rows, C is middle two rows,
+	// D is right two columns, and E is middle two columns. This may be adjusted for different maps
+	// but will yield same results.
 	void SetVars(int x, int y, GameObject piece){
 		if (x == 4 || x == 5 || x ==6 || x ==7){
 			((position)piece.GetComponent("position")).A = true;
@@ -56,11 +68,11 @@ public class GameController : MonoBehaviour {
 		if (y == 1 || y ==2){
 			((position)piece.GetComponent("position")).C = true;
 		}
-		if (x == 2 || x == 3){
+		if (x == 2 || x == 3 || x==6 || x==7){
 			((position)piece.GetComponent("position")).D = true;
 		}
 		
-		if (x == 1 || x == 2){
+		if (x == 1 || x == 2 || x == 5 || x ==6){
 			((position)piece.GetComponent("position")).E = true;
 		}
 	}
