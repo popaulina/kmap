@@ -309,6 +309,7 @@ public class position : MonoBehaviour {
 		GUIStyle style3 = new GUIStyle();
 		style3.fontSize = 45;
 		style3.normal.textColor = Color.white;
+		style3.alignment = TextAnchor.UpperCenter;
 
 		if (cont.unusedPieces.Count != 0 && cont.end == false){
 			// Octet shows up when both players have made at least eight moves.
@@ -410,16 +411,26 @@ public class position : MonoBehaviour {
 		}
 		// End game, clear screen
 		if (cont.end == true){
-			for (int i = 0; i < 16; i++){
-				Destroy(cont.P1pos[i].gameObject.GetComponent("TextMesh"));
+			GUI.Label(new Rect(Screen.width/2 - 150, Screen.height/2 - 50, 300, 30), cont.endGame, style3);
+			for (int i = 0; i < cont.P1pos.Count; i++){
+					cont.P1pos[i].GetComponent<TextMesh>().color = Color.clear;
+				}
+			for (int i = 0; i < cont.P2pos.Count; i++){
+				cont.P2pos[i].GetComponent<TextMesh>().color = Color.clear;
 			}
-			for (int i = 0; i < 16; i++){
-				Destroy(cont.P2pos[i].gameObject.GetComponent("TextMesh"));
+			if (cont.unusedPieces.Count != 0){
+				Dictionary<string, GameObject>.KeyCollection keyColl = cont.unusedPieces.Keys;
+				foreach( string s in keyColl ){
+				    cont.unused.Add(cont.unusedPieces[s]);
+				}
+				for (int i = 0; i < cont.unused.Count; i++){
+					Destroy(cont.unused[i]);
+				}
+				cont.unusedPieces.Clear();
 			}
 			for (int i = 0; i < cont.map.Count; i++){
 				Destroy(cont.map[i].gameObject);
 			}
-			GUI.Label(new Rect(Screen.width/2 - 150, Screen.height/2 - 50, 300, 30), cont.endGame, style3);
 		}
 
 		if (GUI.Button(new Rect(Screen.width/2 - 230, Screen.height - 50, 125, 30), "Back to Main")) Application.LoadLevel("start"); // load main

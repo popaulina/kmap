@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class GameController : MonoBehaviour {
 
 	public Dictionary<string, GameObject> unusedPieces = new Dictionary<string, GameObject>();
+	public List<GameObject> unused; // To destroy pieces in dictionary if game ends before all used
 	public string currentUser = "P1";
 	public List<GameObject> P1pos;
 	public List<GameObject> P2pos;
@@ -82,7 +83,7 @@ public class GameController : MonoBehaviour {
 			GameObject line = GameObject.CreatePrimitive(PrimitiveType.Quad);
 			line.renderer.material.color = Color.white;
 			line.transform.localScale = new Vector3(40.7f, .8f, 1f);
-			line.transform.position = new Vector3(30f, 0f + i*10f, -10f);
+			line.transform.position = new Vector3(30.05f, 0f + i*10f, -10f);
 			map.Add(line);
 		}
 	}
