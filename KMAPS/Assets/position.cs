@@ -38,6 +38,7 @@ public class position : MonoBehaviour {
 			if (cont.currentUser == "P1"){
 				if (cont.unusedPieces.ContainsKey(this.gameObject.name)){	
 					this.gameObject.transform.localScale = new Vector3(2f, 2f, 2f);
+					((BoxCollider)(this.gameObject.collider)).size = new Vector3(4f, 4f, 4f);
 					this.gameObject.AddComponent("TextMesh");
 					GetComponent<TextMesh>().text = "1";
 					GetComponent<TextMesh>().fontSize = 50;
@@ -52,6 +53,7 @@ public class position : MonoBehaviour {
 			else if (cont.currentUser == "P2"){
 				if (cont.unusedPieces.ContainsKey(this.gameObject.name)){
 					this.gameObject.transform.localScale = new Vector3(2f, 2f, 2f);
+					((BoxCollider)(this.gameObject.collider)).size = new Vector3(4f, 4f, 4f);
 					this.gameObject.AddComponent("TextMesh");
 					GetComponent<TextMesh>().text = "0";
 					GetComponent<TextMesh>().fontSize = 50;
@@ -149,7 +151,6 @@ public class position : MonoBehaviour {
 						cont.octetPos.Add(this.gameObject);
 						if (octetValid(cont.octetPos)){
 							cont.endGame = "Player 1 Wins!";
-							cont.End();
 							cont.end = true;
 						} //load end game for octet
 						else {
@@ -172,7 +173,6 @@ public class position : MonoBehaviour {
 						cont.octetPos.Add(this.gameObject);
 						if (octetValid(cont.octetPos)){
 							cont.endGame = "Player 2 Wins!";
-							cont.End();
 							cont.end = true;
 						} //load end game for octet
 						else{
@@ -272,7 +272,6 @@ public class position : MonoBehaviour {
 		if ((((position)selected[0].GetComponent("position")).C == ((position)selected[1].GetComponent("position")).C) && (((position)selected[1].GetComponent("position")).C == ((position)selected[2].GetComponent("position")).C) && (((position)selected[2].GetComponent("position")).C == ((position)selected[3].GetComponent("position")).C)) sharedVar++;
 		if ((((position)selected[0].GetComponent("position")).D == ((position)selected[1].GetComponent("position")).D) && (((position)selected[1].GetComponent("position")).D == ((position)selected[2].GetComponent("position")).D) && (((position)selected[2].GetComponent("position")).D == ((position)selected[3].GetComponent("position")).D)) sharedVar++;
 		if ((((position)selected[0].GetComponent("position")).E == ((position)selected[1].GetComponent("position")).E) && (((position)selected[1].GetComponent("position")).E == ((position)selected[2].GetComponent("position")).E) && (((position)selected[2].GetComponent("position")).E == ((position)selected[3].GetComponent("position")).E)) sharedVar++;
-		Debug.Log(sharedVar);
 		return (sharedVar == 3);
 	}
 
@@ -283,7 +282,6 @@ public class position : MonoBehaviour {
 		if ((((position)selected[0].GetComponent("position")).C == ((position)selected[1].GetComponent("position")).C) && (((position)selected[1].GetComponent("position")).C == ((position)selected[2].GetComponent("position")).C) && (((position)selected[2].GetComponent("position")).C == ((position)selected[3].GetComponent("position")).C) && (((position)selected[3].GetComponent("position")).C == ((position)selected[4].GetComponent("position")).C) && (((position)selected[4].GetComponent("position")).C == ((position)selected[5].GetComponent("position")).C) && (((position)selected[5].GetComponent("position")).C == ((position)selected[6].GetComponent("position")).C) && (((position)selected[6].GetComponent("position")).C == ((position)selected[7].GetComponent("position")).C)) sharedVar++;
 		if ((((position)selected[0].GetComponent("position")).D == ((position)selected[1].GetComponent("position")).D) && (((position)selected[1].GetComponent("position")).D == ((position)selected[2].GetComponent("position")).D) && (((position)selected[2].GetComponent("position")).D == ((position)selected[3].GetComponent("position")).D) && (((position)selected[3].GetComponent("position")).D == ((position)selected[4].GetComponent("position")).D) && (((position)selected[4].GetComponent("position")).D == ((position)selected[5].GetComponent("position")).D) && (((position)selected[5].GetComponent("position")).D == ((position)selected[6].GetComponent("position")).D) && (((position)selected[6].GetComponent("position")).D == ((position)selected[7].GetComponent("position")).D)) sharedVar++;
 		if ((((position)selected[0].GetComponent("position")).E == ((position)selected[1].GetComponent("position")).E) && (((position)selected[1].GetComponent("position")).E == ((position)selected[2].GetComponent("position")).E) && (((position)selected[2].GetComponent("position")).E == ((position)selected[3].GetComponent("position")).E) && (((position)selected[3].GetComponent("position")).E == ((position)selected[4].GetComponent("position")).E) && (((position)selected[4].GetComponent("position")).E == ((position)selected[5].GetComponent("position")).E) && (((position)selected[5].GetComponent("position")).E == ((position)selected[6].GetComponent("position")).E) && (((position)selected[6].GetComponent("position")).E == ((position)selected[7].GetComponent("position")).E)) sharedVar++;
-		Debug.Log(sharedVar);
 		return (sharedVar == 2);
 	}
 
@@ -295,41 +293,78 @@ public class position : MonoBehaviour {
 		if ((((position)selected[0].GetComponent("position")).C == ((position)selected[1].GetComponent("position")).C)) sharedVar++;
 		if ((((position)selected[0].GetComponent("position")).D == ((position)selected[1].GetComponent("position")).D)) sharedVar++;
 		if ((((position)selected[0].GetComponent("position")).E == ((position)selected[1].GetComponent("position")).E)) sharedVar++;
-		Debug.Log(sharedVar);
 		return (sharedVar == 4);
 	}
 
 	// For drawing buttons when switching players during quad counting
 	void OnGUI() {
+		GUIStyle style = new GUIStyle();
+		style.fontSize = 20;
+		style.normal.textColor = Color.white;
+
+		GUIStyle style2 = new GUIStyle();
+		style2.fontSize = 15;
+		style2.normal.textColor = Color.white;
+
+		GUIStyle style3 = new GUIStyle();
+		style3.fontSize = 45;
+		style3.normal.textColor = Color.white;
+
 		if (cont.unusedPieces.Count != 0 && cont.end == false){
 			// Octet shows up when both players have made at least eight moves.
 			if (cont.P2pos.Count > 7){
-				if (GUI.Button(new Rect(Screen.width/2 - 65, 280, 150, 30), "Octet")) cont.octet = true;
+				if (GUI.Button(new Rect(Screen.width/2 - 90, Screen.height - 90, 200, 30), "Octet")) {
+					if (cont.octet == false) cont.octet = true;
+					else if (cont.octet == true){
+						cont.octet = false;
+						for (int i = 0; i < cont.octetPos.Count; i++){
+							cont.octetPos[i].GetComponent<TextMesh>().color = Color.white;	
+						}
+					}
+				}
 			}
 			if (cont.octet == true){
-				GUI.Label(new Rect(Screen.width/2 - 60, 50, 300, 30), "Do you have an octet?");
+				GUI.Label(new Rect(Screen.width/2 - 50, 50, 300, 30), "Do you have an octet?", style2);
 			}
 		}
 
 		if (cont.unusedPieces.Count == 0 && cont.end == false){
 			if (cont.doubles == false){
-				GUI.Label(new Rect(Screen.width/2 - 200, 55, 300, 30), "Player 1 Quads:" + cont.P1quads);
-				GUI.Label(new Rect(Screen.width/2 + 125, 55, 300, 30), "Player 2 Quads:" + cont.P2quads);
-				GUI.Label(new Rect(Screen.width/2 - 50, 40, 300, 30), "Time to count quads!");
+				GUI.Label(new Rect(Screen.width/2 - 200, 80, 300, 30), "Player 1 Quads:" + cont.P1quads, style2);
+				GUI.Label(new Rect(Screen.width/2 + 115, 80, 300, 30), "Player 2 Quads:" + cont.P2quads, style2);
+				GUI.Label(new Rect(Screen.width/2 - 80, 40, 300, 30), "Time to count quads!", style);
 		
 				if (cont.currentUser == "P1"){
-					if (GUI.Button(new Rect(Screen.width/2 - 65, 270, 150, 30), "Player 1 Done")) cont.currentUser = "P2";
+					if (GUI.Button(new Rect(Screen.width/2 - 90, Screen.height - 90, 200, 30), "Player 1 Done")) {
+						if (cont.quadPos.Count != 0){
+							for (int i = 0; i < cont.quadPos.Count; i++){
+								if (((position)cont.quadPos[i].GetComponent("position")).Taken == false){
+									cont.quadPos[i].GetComponent<TextMesh>().color = Color.white;
+								}
+								else cont.quadPos[i].GetComponent<TextMesh>().color = Color.black;
+							}
+							cont.quadPos.Clear();
+						}
+						cont.currentUser = "P2";
+					}
 				}
 				else if (cont.currentUser == "P2"){
-					if (GUI.Button(new Rect(Screen.width/2 - 65, 270, 150, 30), "Player 2 Done")){
+					if (GUI.Button(new Rect(Screen.width/2 - 90, Screen.height - 90, 200, 30), "Player 2 Done")){
 						if (cont.P1quads == cont.P2quads) {
-							cont.doubles = true;
-							cont.currentUser = "P1";
+							if (cont.P1pos.Count != 0){
+								for (int i = 0; i < cont.quadPos.Count; i++){
+									if (((position)cont.quadPos[i].GetComponent("position")).Taken == false){
+										cont.quadPos[i].GetComponent<TextMesh>().color = Color.white;
+									}
+									else cont.quadPos[i].GetComponent<TextMesh>().color = Color.black;
+								}
+								cont.doubles = true;
+								cont.currentUser = "P1";
+							}
 						}
 						else {
 							if (cont.P1quads > cont.P2quads) cont.endGame = "Player 1 Wins!";
 							else cont.endGame = "Player 2 wins!";
-							cont.End();
 							cont.end = true;
 						} //load end scene
 					} 
@@ -337,24 +372,32 @@ public class position : MonoBehaviour {
 			}
 
 			else if (cont.doubles == true){
-				GUI.Label(new Rect(Screen.width/2 - 200, 55, 300, 30), "Player 1 Doubles:" + cont.P1doubles);
-				GUI.Label(new Rect(Screen.width/2 + 115, 55, 300, 30), "Player 2 Doubles:" + cont.P2doubles);
-				GUI.Label(new Rect(Screen.width/2 - 50, 40, 300, 30), "Time to count doubles!");
+				GUI.Label(new Rect(Screen.width/2 - 200, 80, 300, 30), "Player 1 Doubles:" + cont.P1doubles, style2);
+				GUI.Label(new Rect(Screen.width/2 + 100, 80, 300, 30), "Player 2 Doubles:" + cont.P2doubles, style2);
+				GUI.Label(new Rect(Screen.width/2 - 95, 40, 300, 30), "Time to count doubles!", style);
 
 				if (cont.currentUser == "P1"){
-					if (GUI.Button(new Rect(Screen.width/2 - 65, 270, 150, 30), "Player 1 Done")) cont.currentUser = "P2";
+					if (GUI.Button(new Rect(Screen.width/2 - 90, Screen.height - 90, 200, 30), "Player 1 Done")) {
+						if (cont.doublePos.Count != 0){
+								for (int i = 0; i < cont.doublePos.Count; i++){
+									if (((position)cont.doublePos[i].GetComponent("position")).Taken == false){
+										cont.doublePos[i].GetComponent<TextMesh>().color = Color.white;
+									}
+									else cont.doublePos[i].GetComponent<TextMesh>().color = Color.black;
+								}
+						}
+						cont.currentUser = "P2";
+					}
 				}
 				else if (cont.currentUser == "P2"){
-					if (GUI.Button(new Rect(Screen.width/2 - 65, 270, 150, 30), "Player 2 Done")){
+					if (GUI.Button(new Rect(Screen.width/2 - 90, Screen.height - 90, 200, 30), "Player 2 Done")){
 						if (cont.P1doubles == cont.P2doubles){
-							cont.endGame = "It's a tie!";
-							cont.End();
+							cont.endGame = "It's a tie! Play again!";
 							cont.end = true;
 						} // load tie end game
 						else{
 							if (cont.P1doubles > cont.P2doubles) cont.endGame = "Player 1 Wins!";
 							else cont.endGame = "Player 2 wins!";
-							cont.End();
 							cont.end = true;
 						} //load end scene
 					} 
@@ -363,9 +406,9 @@ public class position : MonoBehaviour {
 		}
 
 		if (cont.end == false){
-			GUI.Label(new Rect(Screen.width/2 - 15, 20, 300, 30), cont.currentUser + "'s turn!");
+			GUI.Label(new Rect(Screen.width/2 - 25, 20, 300, 30), cont.currentUser + "'s turn!", style);
 		}
-
+		// End game, clear screen
 		if (cont.end == true){
 			for (int i = 0; i < 16; i++){
 				Destroy(cont.P1pos[i].gameObject.GetComponent("TextMesh"));
@@ -373,9 +416,12 @@ public class position : MonoBehaviour {
 			for (int i = 0; i < 16; i++){
 				Destroy(cont.P2pos[i].gameObject.GetComponent("TextMesh"));
 			}
-			GUI.Label(new Rect(Screen.width/2 - 25, Screen.height/2 - 50, 300, 30), cont.endGame);
+			for (int i = 0; i < cont.map.Count; i++){
+				Destroy(cont.map[i].gameObject);
+			}
+			GUI.Label(new Rect(Screen.width/2 - 150, Screen.height/2 - 50, 300, 30), cont.endGame, style3);
 		}
 
-		if (GUI.Button(new Rect(Screen.width/2 - 230, 260, 125, 30), "Back to main")) Application.LoadLevel("start"); // load main
+		if (GUI.Button(new Rect(Screen.width/2 - 230, Screen.height - 50, 125, 30), "Back to Main")) Application.LoadLevel("start"); // load main
 	}
 }

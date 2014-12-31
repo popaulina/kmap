@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour {
 	public List<GameObject> doublePos;
 	public List<GameObject> quadPos;
 	public List<GameObject> octetPos;
+	public List<GameObject> map; // for removing the map on end screen
 	public int P1quads = 0;
 	public int P2quads = 0;
 	public int P1doubles = 0;
@@ -24,7 +25,7 @@ public class GameController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		// Drawing the board and putting pieces into a list
+		// Drawing the board pieces and putting pieces into a list
 		for (int y = 0; y < 4; y++){
 			for (int x = 0; x < 4; x++){
 				GameObject piece = GameObject.CreatePrimitive(PrimitiveType.Quad);
@@ -55,16 +56,40 @@ public class GameController : MonoBehaviour {
 				unusedPieces.Add(piece.name, piece);
 			}
 		}
+		// Drawing the kmap outline
+		for (int i = 0; i < 5; i++){
+			GameObject line = GameObject.CreatePrimitive(PrimitiveType.Quad);
+			line.renderer.material.color = Color.white;
+			line.transform.localScale = new Vector3(.8f, 40.8f, 1f);
+			line.transform.position = new Vector3(-40.05f + i*10f, 20.014f, -10f);
+			map.Add(line);
+		}
+		for (int i = 0; i < 5; i++){
+			GameObject line = GameObject.CreatePrimitive(PrimitiveType.Quad);
+			line.renderer.material.color = Color.white;
+			line.transform.localScale = new Vector3(.8f, 40.8f, 1f);
+			line.transform.position = new Vector3(10.1f + i*10f, 20.014f, -10f);
+			map.Add(line);
+		}
+		for (int i = 0; i < 5; i++){
+			GameObject line = GameObject.CreatePrimitive(PrimitiveType.Quad);
+			line.renderer.material.color = Color.white;
+			line.transform.localScale = new Vector3(40.7f, .8f, 1f);
+			line.transform.position = new Vector3(-20f, 0f + i*10f, -10f);
+			map.Add(line);
+		}
+		for (int i = 0; i < 5; i++){
+			GameObject line = GameObject.CreatePrimitive(PrimitiveType.Quad);
+			line.renderer.material.color = Color.white;
+			line.transform.localScale = new Vector3(40.7f, .8f, 1f);
+			line.transform.position = new Vector3(30f, 0f + i*10f, -10f);
+			map.Add(line);
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
-	}
-
-	public void End()
-	{
-		// Clear screen
 	}
 
 	// Vars based on kmap setting where A is right map, B is bottom two rows, C is middle two rows,
